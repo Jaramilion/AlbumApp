@@ -3,14 +3,27 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {AlbumRoutes} from './routes';
 import {HomeScreens} from '../screens';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   [AlbumRoutes.HomeScreen]: undefined;
-  [AlbumRoutes.AlbumDetail]: {albumTitle: string};
+  [AlbumRoutes.AlbumDetail]: {
+    albumData: {
+      userId: number;
+      albumId: number;
+      title: string;
+    };
+  };
 };
 const AlbumStack = createStackNavigator<RootStackParamList>();
 const AlbumFlowNavigator: FC = () => {
   return (
-    <AlbumStack.Navigator initialRouteName={AlbumRoutes.HomeScreen}>
+    <AlbumStack.Navigator
+      initialRouteName={AlbumRoutes.HomeScreen}
+      screenOptions={{
+        headerStyle: {
+          elevation: 3,
+        },
+        headerShadowVisible: true,
+      }}>
       <AlbumStack.Screen
         name={AlbumRoutes.HomeScreen}
         component={HomeScreens.HomeScreen}
@@ -21,7 +34,7 @@ const AlbumFlowNavigator: FC = () => {
       <AlbumStack.Screen
         name={AlbumRoutes.AlbumDetail}
         component={HomeScreens.AlbumDetail}
-        options={({route}) => ({title: route.params.albumTitle})}
+        options={({route}) => ({title: route.params.albumData.title})}
       />
     </AlbumStack.Navigator>
   );
