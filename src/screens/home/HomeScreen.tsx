@@ -1,45 +1,65 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {JSX, useState} from 'react';
-import {SectionList, StyleSheet, View} from 'react-native';
+import React, {JSX, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  SectionList,
+  SectionListData,
+  SectionListRenderItem,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {AlbumRoutes} from '../../navigation/routes';
 import {RootStackParamList} from '../../navigation/MainNavigator';
 import AlbumListHeader from '../../components/molecules/AlbumListHeader';
-import AlbumListItem from '../../components/molecules/AlbumListItem';
+import AlbumListItem, {
+  albumItem,
+} from '../../components/molecules/AlbumListItem';
 import colors from '../../themes/colors';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux';
+import {getAlbumsData} from '../../store/album/albumSlice';
+import {AlbumRecord} from '../../types/albumTypes';
 
 type Props = StackScreenProps<RootStackParamList, AlbumRoutes.HomeScreen>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
-  const [data, setData] = useState([]);
+  const dispatch = useAppDispatch();
 
-  const deleteAlbum = (userId: number, albumId: number) => {
-    /* const newData = [...data];
-    const userIndex = newData.findIndex(u => u.id === userId);
-    const indexAlbum = newData[userIndex].data.findIndex(i => i.id === albumId);
-    newData[userIndex].data.splice(indexAlbum, 1);
-    setData(newData); */
-  };
+  useEffect(() => {
+    dispatch(getAlbumsData());
+  }, []);
+
+  const data = useAppSelector(state => state.albumData);
+  const status = useAppSelector(state => state.albumDataStatus);
+
+  const onAlbumPressHandler = (item: albumItem) =>
+    navigation.navigate(AlbumRoutes.AlbumDetail, {albumData: item});
+
+  const renderAlbumListItem: SectionListRenderItem<AlbumRecord> = ({item}) => (
+    <AlbumListItem
+      albumData={{
+        albumId: item.id,
+        title: item.title,
+        userId: item.userId,
+      }}
+    />
+  );
+  const keyExtractor = ({title, id}: {title: string; id: number}) => title + id;
+  const renderSeparator = () => <View style={styles.separator} />;
+  const renderLoading = () => <ActivityIndicator size={'large'} />;
+
   return (
     <View style={styles.mainView}>
       <SectionList
+        ListEmptyComponent={renderLoading}
         sections={data}
-        keyExtractor={({title, id}) => title + id}
-        renderItem={({item}) => (
-          <AlbumListItem
-            onPressDelete={() => deleteAlbum(item.userId, item.id)}
-            albumData={{
-              albumId: item.id,
-              title: item.title,
-              userId: item.userId,
-            }}
-          />
-        )}
-        renderSectionHeader={({section: {title}}) => (
-          <AlbumListHeader title={title} />
+        keyExtractor={keyExtractor}
+        renderItem={renderAlbumListItem}
+        renderSectionHeader={({section: {name}}) => (
+          <AlbumListHeader title={name} />
         )}
         stickySectionHeadersEnabled={true}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
         initialNumToRender={20}
+        ItemSeparatorComponent={renderSeparator}
       />
     </View>
   );

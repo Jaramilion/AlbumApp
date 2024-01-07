@@ -4,32 +4,45 @@ import useTypeSafeNavigation from '../../hooks/navigation';
 import {AlbumRoutes} from '../../navigation/routes';
 import CustomText from '../atoms/CustomText';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {deleteAlbumFromUser} from '../../store/album/albumSlice';
+import {useAppDispatch} from '../../hooks/redux';
 
 interface Props {
-  albumData: {
-    userId: number;
-    albumId: number;
-    title: string;
-  };
-  onPressDelete: () => void;
+  albumData: albumItem;
 }
 
+export type albumItem = {
+  userId: number;
+  albumId: number;
+  title: string;
+};
+
 const AlbumListItem: FC<Props> = memo(
-  ({albumData, onPressDelete}: Props) => {
+  ({albumData}: Props) => {
     const navigation = useTypeSafeNavigation();
+    const dispatch = useAppDispatch();
+
+    const onDeleteHandler = () => {
+      dispatch(
+        deleteAlbumFromUser({
+          userId: albumData.userId,
+          albumId: albumData.albumId,
+        }),
+      );
+    };
+    const onAlbumPressHandler = () =>
+      navigation.navigate(AlbumRoutes.AlbumDetail, {albumData});
 
     return (
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.titleContainer}
           activeOpacity={0.4}
-          onPress={() =>
-            navigation.navigate(AlbumRoutes.AlbumDetail, {albumData})
-          }>
+          onPress={onAlbumPressHandler}>
           <CustomText style={styles.title}>{albumData.title}</CustomText>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={onPressDelete}
+          onPress={onDeleteHandler}
           activeOpacity={0.4}
           style={styles.iconContainer}>
           <Icon name="minus-circle" size={25} />
