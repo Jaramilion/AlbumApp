@@ -1,7 +1,8 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {JSX, useCallback, useEffect} from 'react';
+import React, {JSX, useCallback} from 'react';
 import {
   SectionList,
+  SectionListData,
   SectionListRenderItem,
   StyleSheet,
   View,
@@ -11,8 +12,6 @@ import {RootStackParamList} from '../../navigation/MainNavigator';
 import AlbumListHeader from '../../components/molecules/AlbumListHeader';
 import AlbumListItem from '../../components/molecules/AlbumListItem';
 import colors from '../../themes/colors';
-import {useAppDispatch, useAppSelector} from '../../hooks/redux';
-import {getAlbumsData} from '../../store/album/albumSlice';
 import {AlbumRecord} from '../../types/albumTypes';
 import {
   LIST_ITEM_ALBUM_HEIGHT,
@@ -21,19 +20,12 @@ import {
 import STATUSES from '../../types/statuses';
 import Loading from '../../components/atoms/Loading';
 import ApiError from '../../components/molecules/ApiError';
+import {useAlbumData} from '../../hooks/useAlbumData';
 
 type Props = StackScreenProps<RootStackParamList, AlbumRoutes.HomeScreen>;
 
 function HomeScreen({navigation}: Props): JSX.Element {
-  const dispatch = useAppDispatch();
-  const fetchAlbums = () => dispatch(getAlbumsData());
-  useEffect(() => {
-    fetchAlbums();
-  }, []);
-
-  const data = useAppSelector(state => state.albumData);
-  const status = useAppSelector(state => state.albumDataStatus);
-  const statusAlbums = useAppSelector(state => state.photosByAlbumStatus);
+  const {data, status, fetchAlbums} = useAlbumData();
 
   const renderAlbumListItem: SectionListRenderItem<AlbumRecord> = useCallback(
     ({item}) => (
@@ -48,9 +40,12 @@ function HomeScreen({navigation}: Props): JSX.Element {
     [],
   );
   const renderSectionHeaderItem = useCallback(
-    ({section: {name}}): React.ReactElement => <AlbumListHeader title={name} />,
+    ({section: {name}}: {section: SectionListData<AlbumRecord>}) => (
+      <AlbumListHeader title={name} />
+    ),
     [],
   );
+
   const keyExtractor = ({title, id}: {title: string; id: number}) => title + id;
   const renderSeparator = useCallback(
     () => <View style={styles.separator} />,
@@ -72,7 +67,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
             stickySectionHeadersEnabled={true}
             initialNumToRender={20}
             ItemSeparatorComponent={renderSeparator}
-            getItemLayout={(data, index) => ({
+            getItemLayout={(_data, index) => ({
               length: LIST_ITEM_ALBUM_HEIGHT + LIST_ITEM_ALBUM_SEPARATOR_HEIGHT,
               offset:
                 (LIST_ITEM_ALBUM_HEIGHT + LIST_ITEM_ALBUM_SEPARATOR_HEIGHT) *

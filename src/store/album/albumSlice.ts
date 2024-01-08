@@ -61,7 +61,7 @@ export const albumSlice = createSlice({
     }
 })
 
-export const {getAlbumsData, getAlbumsDataSuccess, getAlbumsDataFailure, deleteAlbumFromUser, getPhotosByAlbum, getPhotosByAlbumSuccess, getPhotosByAlbumFailure, resetPhotosByAlbum, setActiveDisplayAllPhotos, getAllPhotos} = albumSlice.actions
+export const { getAlbumsData, getAlbumsDataSuccess, getAlbumsDataFailure, deleteAlbumFromUser, getPhotosByAlbum, getPhotosByAlbumSuccess, getPhotosByAlbumFailure, resetPhotosByAlbum, setActiveDisplayAllPhotos, getAllPhotos} = albumSlice.actions
 
 export const stateAlbumData = ( state: RootState ) => state.albumData
 export default albumSlice.reducer
