@@ -29,7 +29,7 @@ export const useAlbumPhotos = (albumId: number) => {
   }, []);
 
   function fetchPhotos() {
-    dispatch(getPhotosByAlbum(albumId));
+    dispatch(toggleStatus ? getAllPhotos() : getPhotosByAlbum(albumId));
   }
 
   async function cleanImgsCache() {
