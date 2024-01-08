@@ -1,11 +1,11 @@
 import React, {FC, memo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import useTypeSafeNavigation from '../../hooks/navigation';
 import {AlbumRoutes} from '../../navigation/routes';
-import CustomText from '../atoms/CustomText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {deleteAlbumFromUser} from '../../store/album/albumSlice';
 import {useAppDispatch} from '../../hooks/redux';
+import {LIST_ITEM_ALBUM_HEIGHT} from '../../themes/sizes';
 
 interface Props {
   albumData: albumItem;
@@ -30,6 +30,7 @@ const AlbumListItem: FC<Props> = memo(
         }),
       );
     };
+
     const onAlbumPressHandler = () =>
       navigation.navigate(AlbumRoutes.AlbumDetail, {albumData});
 
@@ -39,7 +40,7 @@ const AlbumListItem: FC<Props> = memo(
           style={styles.titleContainer}
           activeOpacity={0.4}
           onPress={onAlbumPressHandler}>
-          <CustomText style={styles.title}>{albumData.title}</CustomText>
+          <Text style={styles.title}>{albumData.title}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={onDeleteHandler}
@@ -57,13 +58,14 @@ const AlbumListItem: FC<Props> = memo(
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 12,
     paddingHorizontal: 10,
     flexDirection: 'row',
     flex: 1,
+    height: LIST_ITEM_ALBUM_HEIGHT,
   },
   titleContainer: {
     flex: 0.9,
+    justifyContent: 'center',
   },
   iconContainer: {
     flex: 0.1,
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginRight: '7%',
+    fontSize: 18,
   },
 });
 

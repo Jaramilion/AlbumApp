@@ -12,7 +12,7 @@ const AlbumListHeader: FC<Props> = memo(
   ({title}: Props) => {
     return (
       <View style={styles.container}>
-        <CustomText size="l">{title}</CustomText>
+        <Text style={styles.title}>{title}</Text>
       </View>
     );
   },
@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray,
     paddingVertical: 12,
     paddingHorizontal: 10,
+  },
+  title: {
+    fontSize: 22,
   },
 });
 export default AlbumListHeader;

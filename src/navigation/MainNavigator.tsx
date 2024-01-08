@@ -1,4 +1,5 @@
 import React, {FC} from 'react';
+import {Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AlbumRoutes} from './routes';
 import {HomeScreens} from '../screens';
@@ -34,7 +35,12 @@ const AlbumFlowNavigator: FC = () => {
       <AlbumStack.Screen
         name={AlbumRoutes.AlbumDetail}
         component={HomeScreens.AlbumDetail}
-        options={({route}) => ({title: route.params.albumData.title})}
+        options={({route}) => ({
+          title: route.params.albumData.title,
+          headerRight(props) {
+            return <Text>we</Text>;
+          },
+        })}
       />
     </AlbumStack.Navigator>
   );
