@@ -1,12 +1,9 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {JSX, useCallback, useEffect} from 'react';
 import {
-  ActivityIndicator,
   SectionList,
-  SectionListData,
   SectionListRenderItem,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import {AlbumRoutes} from '../../navigation/routes';
@@ -36,6 +33,7 @@ function HomeScreen({navigation}: Props): JSX.Element {
 
   const data = useAppSelector(state => state.albumData);
   const status = useAppSelector(state => state.albumDataStatus);
+  const statusAlbums = useAppSelector(state => state.photosByAlbumStatus);
 
   const renderAlbumListItem: SectionListRenderItem<AlbumRecord> = useCallback(
     ({item}) => (

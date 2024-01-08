@@ -1,8 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getAlbumsData, getAlbumsDataFailure, getAlbumsDataSuccess } from './albumSlice'
-import { getUsers } from '../../api/albumApi'
+import { getAlbumsData, getAlbumsDataFailure, getAlbumsDataSuccess, getAllPhotos, getPhotosByAlbum, getPhotosByAlbumFailure, getPhotosByAlbumSuccess } from './albumSlice'
+import { getAllPhotosAlbum, getPhotosByAlbumId, getUsers } from '../../api/albumApi'
 import { getUsersAlbums } from '../../adapters/apiAdapter'
 import { AlbumData } from '../../types/albumTypes'
+import { PhotosByAlbum, Users } from '../../types/apiTypes'
+import { AnyAction } from 'redux-saga'
 
 
 function* fetchAlbums() {
@@ -14,10 +16,29 @@ function* fetchAlbums() {
     yield put(getAlbumsDataFailure())
   }
 }
+function* fetchPhotosByAlbum({payload}:AnyAction) {
+  try {
+    const photosByAlbum:PhotosByAlbum = yield call(getPhotosByAlbumId,payload)
+    yield put(getPhotosByAlbumSuccess(photosByAlbum))
+  } catch (e) {
+    yield put(getPhotosByAlbumFailure())
+  }
+}
+
+function* fetchAllPhotos() {
+  try {
+    const photosByAlbum:PhotosByAlbum = yield call(getAllPhotosAlbum)
+    yield put(getPhotosByAlbumSuccess(photosByAlbum))
+  } catch (e) {
+    yield put(getPhotosByAlbumFailure())
+  }
+}
 
 
 function* albumSagas() {
   yield takeEvery(getAlbumsData, fetchAlbums)
+  yield takeEvery(getPhotosByAlbum, fetchPhotosByAlbum)
+  yield takeEvery(getAllPhotos, fetchAllPhotos)
 }
 
 

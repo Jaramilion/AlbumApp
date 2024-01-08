@@ -1,8 +1,14 @@
 import React, {FC} from 'react';
-import {Text} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AlbumRoutes} from './routes';
 import {HomeScreens} from '../screens';
+import RightNavHeader from '../components/molecules/RightNavHeader';
+import {useAppDispatch, useAppSelector} from '../hooks/redux';
+import {
+  resetPhotosByAlbum,
+  setActiveDisplayAllPhotos,
+} from '../store/album/albumSlice';
 
 export type RootStackParamList = {
   [AlbumRoutes.HomeScreen]: undefined;
@@ -16,6 +22,12 @@ export type RootStackParamList = {
 };
 const AlbumStack = createStackNavigator<RootStackParamList>();
 const AlbumFlowNavigator: FC = () => {
+  const dispatch = useAppDispatch();
+  const statusToggle = useAppSelector(state => state.displayAllPhotos);
+  const toggleStarHandler = () => {
+    if (!statusToggle) dispatch(setActiveDisplayAllPhotos());
+    else dispatch(resetPhotosByAlbum());
+  };
   return (
     <AlbumStack.Navigator
       initialRouteName={AlbumRoutes.HomeScreen}
@@ -38,8 +50,9 @@ const AlbumFlowNavigator: FC = () => {
         options={({route}) => ({
           title: route.params.albumData.title,
           headerRight(props) {
-            return <Text>we</Text>;
+            return <RightNavHeader toggleStar={toggleStarHandler} />;
           },
+          headerRightContainerStyle: styles.headerRight,
         })}
       />
     </AlbumStack.Navigator>
@@ -49,5 +62,12 @@ const AlbumFlowNavigator: FC = () => {
 const MainNavigator = () => {
   return <AlbumFlowNavigator />;
 };
+
+const styles = StyleSheet.create({
+  headerRight: {
+    alignItems: 'flex-end',
+    paddingRight: 20,
+  },
+});
 
 export default MainNavigator;

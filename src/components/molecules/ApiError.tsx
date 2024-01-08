@@ -3,7 +3,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import CustomText from '../atoms/CustomText';
 import colors from '../../themes/colors';
 interface Props {
-  retryHandler: () => void;
+  retryHandler?: () => void;
 }
 function ApiError({retryHandler}: Props): JSX.Element {
   return (
