@@ -23,7 +23,7 @@ const AlbumListHeader: FC<Props> = memo(
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.gray,
+    backgroundColor: colors.darkGray,
     paddingVertical: 12,
     paddingHorizontal: 10,
   },

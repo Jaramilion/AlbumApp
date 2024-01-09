@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {deleteAlbumFromUser} from '../../store/album/albumSlice';
 import {useAppDispatch} from '../../hooks/redux';
 import {LIST_ITEM_ALBUM_HEIGHT} from '../../themes/sizes';
+import colors from '../../themes/colors';
 
 interface Props {
   albumData: albumItem;
@@ -46,7 +47,7 @@ const AlbumListItem: FC<Props> = memo(
           onPress={onDeleteHandler}
           activeOpacity={0.4}
           style={styles.iconContainer}>
-          <Icon name="minus-circle" size={25} />
+          <Icon name="minus-circle" size={25} color={colors.deleteRed} />
         </TouchableOpacity>
       </View>
     );

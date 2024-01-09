@@ -5,6 +5,8 @@ import {
   SectionListData,
   SectionListRenderItem,
   StyleSheet,
+  Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {AlbumRoutes} from '../../navigation/routes';
@@ -52,6 +54,9 @@ function HomeScreen({navigation}: Props): JSX.Element {
     [],
   );
 
+  const navigateTestScreen = () => {
+    navigation.navigate(AlbumRoutes.TestScreen);
+  };
   const renderListHandler = () => {
     switch (status) {
       case STATUSES.DEFAULT:
@@ -81,7 +86,14 @@ function HomeScreen({navigation}: Props): JSX.Element {
     }
   };
 
-  return <View style={styles.mainView}>{renderListHandler()}</View>;
+  return (
+    <View style={styles.mainView}>
+      <TouchableOpacity onPress={navigateTestScreen} style={styles.testMe}>
+        <Text>Hi test me</Text>
+      </TouchableOpacity>
+      {renderListHandler()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -94,6 +106,10 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.gray,
     marginHorizontal: 10,
+  },
+  testMe: {
+    padding: 5,
+    backgroundColor: colors.gray,
   },
 });
 

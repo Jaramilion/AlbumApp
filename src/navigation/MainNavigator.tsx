@@ -9,6 +9,7 @@ import {
   resetPhotosByAlbum,
   setActiveDisplayAllPhotos,
 } from '../store/album/albumSlice';
+import useTypeSafeNavigation from '../hooks/navigation';
 
 export type RootStackParamList = {
   [AlbumRoutes.HomeScreen]: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
       title: string;
     };
   };
+  [AlbumRoutes.TestScreen]: undefined;
 };
 const AlbumStack = createStackNavigator<RootStackParamList>();
 const AlbumFlowNavigator: FC = () => {
@@ -28,6 +30,7 @@ const AlbumFlowNavigator: FC = () => {
     if (!statusToggle) dispatch(setActiveDisplayAllPhotos());
     else dispatch(resetPhotosByAlbum());
   };
+
   return (
     <AlbumStack.Navigator
       initialRouteName={AlbumRoutes.HomeScreen}
@@ -61,6 +64,10 @@ const AlbumFlowNavigator: FC = () => {
           },
           headerRightContainerStyle: styles.headerRight,
         })}
+      />
+      <AlbumStack.Screen
+        name={AlbumRoutes.TestScreen}
+        component={HomeScreens.TestScreen}
       />
     </AlbumStack.Navigator>
   );
