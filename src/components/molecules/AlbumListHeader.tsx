@@ -1,6 +1,5 @@
 import React, {FC, JSX, memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import CustomText from '../atoms/CustomText';
 import colors from '../../themes/colors';
 
 interface Props {
@@ -23,12 +22,13 @@ const AlbumListHeader: FC<Props> = memo(
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.darkGray,
+    backgroundColor: colors.gray,
     paddingVertical: 12,
     paddingHorizontal: 10,
   },
   title: {
     fontSize: 22,
+    fontFamily: 'Lato-Regular',
   },
 });
 export default AlbumListHeader;

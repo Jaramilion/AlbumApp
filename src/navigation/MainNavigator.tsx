@@ -35,16 +35,8 @@ const AlbumFlowNavigator: FC = () => {
     <AlbumStack.Navigator
       initialRouteName={AlbumRoutes.HomeScreen}
       screenOptions={{
-        headerStyle: {
-          elevation: 3,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-        },
+        headerStyle: styles.header,
+        headerTitleStyle: styles.headerTitle,
         headerShadowVisible: true,
       }}>
       <AlbumStack.Screen
@@ -81,6 +73,19 @@ const styles = StyleSheet.create({
   headerRight: {
     alignItems: 'flex-end',
     paddingRight: 20,
+  },
+  header: {
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+  },
+  headerTitle: {
+    fontFamily: 'Lato-Regular',
   },
 });
 

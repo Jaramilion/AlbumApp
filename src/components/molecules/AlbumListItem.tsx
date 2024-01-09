@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   title: {
     marginRight: '7%',
     fontSize: 18,
+    fontFamily: 'Lato-Regular',
   },
 });
 

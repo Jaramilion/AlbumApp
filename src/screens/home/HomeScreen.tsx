@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   testMe: {
     padding: 5,
-    backgroundColor: colors.gray,
+    backgroundColor: colors.darkGray,
   },
 });
 
