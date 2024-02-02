@@ -1,5 +1,5 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {JSX, useCallback} from 'react';
+import React, {JSX, useCallback, useMemo} from 'react';
 import {
   SectionList,
   SectionListData,
@@ -29,25 +29,23 @@ type Props = StackScreenProps<RootStackParamList, AlbumRoutes.HomeScreen>;
 function HomeScreen({navigation}: Props): JSX.Element {
   const {data, status, fetchAlbums} = useAlbumData();
 
-  const renderAlbumListItem: SectionListRenderItem<AlbumRecord> = useCallback(
-    ({item}) => (
-      <AlbumListItem
-        albumData={{
-          albumId: item.id,
-          title: item.title,
-          userId: item.userId,
-        }}
-      />
-    ),
-    [],
-  );
-  const renderSectionHeaderItem = useCallback(
-    ({section: {name}}: {section: SectionListData<AlbumRecord>}) => (
-      <AlbumListHeader title={name} />
-    ),
-    [],
-  );
-
+  const renderAlbumListItem: SectionListRenderItem<AlbumRecord> = ({item}) => {
+    const memoizedAlbumData = useMemo(() => {
+      return {
+        albumId: item.id,
+        title: item.title,
+        userId: item.userId,
+      };
+    }, [item]);
+    return <AlbumListItem albumData={memoizedAlbumData} />;
+  };
+  const renderSectionHeaderItem = ({
+    section: {name},
+  }: {
+    section: SectionListData<AlbumRecord>;
+  }) => {
+    return <AlbumListHeader title={name} />;
+  };
   const keyExtractor = ({title, id}: {title: string; id: number}) => title + id;
   const renderSeparator = useCallback(
     () => <View style={styles.separator} />,
